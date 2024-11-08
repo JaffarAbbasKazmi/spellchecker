@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/navigation"
+    app:startDestination="@id/main">
+
+    <fragment
+        android:id="@+id/main"
+        android:name="com.example.richard.main"
+        android:label="main" >
+        <action
+            android:id="@+id/action_main_to_detail"
+            app:destination="@id/detail" />
+        <argument
+            android:name="drawable"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <argument
+            android:name="title"
+            app:argType="string"
+            android:defaultValue="image" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/detail"
+        android:name="com.example.richard.detail"
+        android:label="detail">
+        <!-- Define arguments in the destination fragment (Detail) -->
+        <argument
+            android:name="drawable"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <argument
+            android:name="title"
+            app:argType="string"
+            android:defaultValue="image" />
+    </fragment>
+</navigation>
