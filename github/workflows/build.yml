@@ -1,0 +1,43 @@
+name: Android Build  # The name of your workflow
+
+on:
+  push:
+    branches:
+      - main  # Specifies that the workflow will run on every push to the 'main' branch
+
+jobs:
+  build:  # This section defines a job called 'build'
+    runs-on: ubuntu-latest  # Specifies the OS environment GitHub Actions will use
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2  # Checks out your code from the repository to the GitHub Actions environment
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2  # Sets up Java Development Kit, which is needed to build Android apps
+        with:
+          distribution: 'zulu'
+          java-version: '11'  # Specifies the Java version
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v2  # Sets up Android SDK to allow the building of Android apps
+
+      - name: Decode and Save Keystore
+        env:
+          KEYSTORE_FILE: ${{ secrets.KEYSTORE_FILE }}  # Fetches the Base64-encoded keystore from GitHub Secrets
+        run: |
+          echo "$KEYSTORE_FILE" | base64 --decode > app/keystore.jks  # Decodes and saves it as a .jks file
+
+      - name: Build Android App
+        run: ./gradlew bundleRelease  # Runs the Gradle command to build the app bundle (.aab)
+        env:
+          KEYSTORE_FILE: app/keystore.jks
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+
+      - name: Upload AAB
+        uses: actions/upload-artifact@v2
+        with:
+          name: app-bundle
+          path: app/build/outputs/bundle/release/*.aab  # This uploads the .aab file as an artifact for download
