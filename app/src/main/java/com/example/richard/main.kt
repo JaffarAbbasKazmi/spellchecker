@@ -28,7 +28,7 @@ class main : Fragment() {
         var goToDetail1 = view.findViewById<Button>(R.id.button1)
         var goToDetail2 = view.findViewById<Button>(R.id.button2)
         var goToDetail3  = view.findViewById<Button>(R.id.button3)
-
+//heeloo
         navController = Navigation.findNavController(view)
 
         goToDetail1.setOnClickListener{
