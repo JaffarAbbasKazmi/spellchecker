@@ -28,6 +28,9 @@ jobs:
         run: |
           echo "$KEYSTORE_FILE" | base64 --decode > app/keystore.jks  # Decodes and saves it as a .jks file
 
+      - name: Make Gradlew Executable  # This is the added step to fix permission issues
+        run: chmod +x ./gradlew
+
       - name: Build Android App
         run: ./gradlew bundleRelease  # Runs the Gradle command to build the app bundle (.aab)
         env:
